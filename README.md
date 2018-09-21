@@ -24,6 +24,11 @@ yarn start
 
 Then see http://localhost:9001
 
+#### Scss index generater
+
+If you want to add new `.scss` component file, you can simply add to `app/assets/scss/components`. Then `components/_index.scss` added new component will be regenerated  automaticaly.
+
+
 ### Build
 
 To build your app without unnecessary files
