@@ -1,6 +1,7 @@
 ## Usage
 
 - Required to be installed node.js `v10.4.0` in your computer
+- Recommended to use [ndenv](https://github.com/riywo/ndenv) which manages multi versions of node.js.
 
 ### Setup
 
