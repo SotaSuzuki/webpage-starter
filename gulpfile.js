@@ -41,13 +41,13 @@ gulp.task('sass', ['generateScssIndex'], () => {
 })
 
 gulp.task('build', ['sass'], async () => {
-  const removeTargets = [`${src.dist}/assets/scss`]
+  const excludedDirs = [`${src.dist}/assets/scss`]
 
   try {
     await fs.copy(src.app, src.dist)
-    removeTargets.forEach((it) => {
-      if (fs.existsSync(it)) {
-        fs.remove(it)
+    excludedDirs.forEach((dir) => {
+      if (fs.existsSync(dir)) {
+        fs.remove(dir)
       }
     })
   } catch (err) {
