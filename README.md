@@ -1,3 +1,14 @@
+# Webpage Starter
+
+For creating simple webpages using HTML and CSS(SCSS), without JavaScript yet for now.
+
+## Features
+
+- gulp
+- node-sass
+- autoprefixer
+- browser-sync
+
 ## Usage
 
 - Required to be installed node.js `v10.4.0` in your computer
