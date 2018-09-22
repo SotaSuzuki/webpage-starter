@@ -1,6 +1,5 @@
 'use strict';
 
-const path = require('path')
 const fs = require('fs-extra')
 const gulp = require('gulp')
 const browserSync = require('browser-sync')
@@ -9,6 +8,7 @@ const $postcss = require('gulp-postcss')
 const $sass = require('gulp-sass')
 const $plumber = require('gulp-plumber')
 
+const { generateScssIndex } = require('./lib/helpers')
 const {
   src,
   sassOptions,
@@ -20,26 +20,17 @@ gulp.task('default', () => {
   gulp.start(['serve'])
 })
 
-gulp.task('serve', ['generateIndex', 'sass'], () => {
+gulp.task('serve', ['sass'], () => {
   browserSync.init(browserSyncOptions)
   gulp.watch(src.html).on('change', browserSync.reload)
-  gulp.watch(src.scss, ['generateIndex', 'sass'])
+  gulp.watch(src.scss, ['sass'])
 })
 
-gulp.task('generateIndex', () => {
-  const pwd = process.cwd()
-  const generateIndex = (dirpath) => {
-    const dir = path.join(pwd, dirpath)
-    const files = fs.readdirSync(dir).filter((it) => ['.scss', ''].indexOf(path.extname(it)) !== -1 && path.basename(it) !== '_index.scss')
-    const names = files.map((file) => path.basename(file, '.scss').replace('_', ''))
-    const importBody = names.map((name) => `@import '${name}';`).join('\n')
-    fs.writeFileSync(dir + '/_index.scss', [importBody].join('\n', console.error))
-  }
-
-  ['./app/assets/scss/components'].forEach(generateIndex)
+gulp.task('generateScssIndex', () => {
+  ['./app/assets/scss/components'].forEach(generateScssIndex)
 })
 
-gulp.task('sass', () => {
+gulp.task('sass', ['generateScssIndex'], () => {
   const postcssProcessers = [autoprefixer(autoprefixerOptions)]
   return gulp.src(src.scss)
     .pipe($plumber())
@@ -49,10 +40,9 @@ gulp.task('sass', () => {
     .pipe(browserSync.stream())
 })
 
-gulp.task('build', async () => {
-  const removeTargets = [
-    `${src.dist}/assets/scss`
-  ]
+gulp.task('build', ['sass'], async () => {
+  const removeTargets = [`${src.dist}/assets/scss`]
+
   try {
     await fs.copy(src.app, src.dist)
     removeTargets.forEach((it) => {
