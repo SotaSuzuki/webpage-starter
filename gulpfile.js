@@ -8,13 +8,13 @@ const $postcss = require('gulp-postcss')
 const $sass = require('gulp-sass')
 const $plumber = require('gulp-plumber')
 
-const { generateScssIndex } = require('./lib/helpers')
+const { generateScssIndex } = require('./build/lib/helpers')
 const {
   src,
   sassOptions,
   autoprefixerOptions,
   browserSyncOptions
-} = require('./gulpconfig')
+} = require('./build/config')
 
 gulp.task('default', () => {
   gulp.start(['serve'])
